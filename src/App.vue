@@ -1,7 +1,9 @@
 <template>
   <div id="app">
+    <PostForm/>
+    <p>Количество постов: {{ postsCount }}</p>
     <div class="post"
-          v-for="post in allPosts" :key="post.id"
+          v-for="post in validPosts" :key="post.id"
     >
       <h3>{{ post.title }}</h3>
       <p>{{ post.body }}</p>
@@ -10,12 +12,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import PostForm from '@/components/PostForm'
 export default {
   name: 'App',
-  computed: mapGetters(['allPosts']),
+  components: { PostForm },
+  computed: mapGetters(['validPosts', 'postsCount']),
+  methods: mapActions(['fetchPosts']),
   async mounted () {
-    this.$store.dispatch('fetchPosts')
+    // this.$store.dispatch('fetchPosts')
+    this.fetchPosts()
   }
 }
 </script>
@@ -34,7 +40,7 @@ export default {
     border: 1px solid #cecece;
     margin-bottom: 1rem;
     padding: 1rem;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 }
 </style>
